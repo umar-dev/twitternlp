@@ -10,8 +10,6 @@ def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)
     if response.status_code == 200:
         result = response.json()
-        # sentiment_label = result[0]["label"]
-        # sentiment_score = result[0]["score"]
         return result
     else:
         return None
@@ -24,4 +22,8 @@ user_input = st.text_area("Enter a text:")
 if st.button("Analyze Sentiment"):
     if user_input:
         result = query({"inputs": user_input})
-        st.write(result)
+        if result:
+            # Display the JSON response as a table
+            st.table(result)
+        else:
+            st.error("Error in API response. Please check your input or try again.")
